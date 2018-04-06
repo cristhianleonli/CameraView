@@ -24,12 +24,17 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
     
     private var captureSession: AVCaptureSession = AVCaptureSession()
     
-    /// Physical position of camera
-    public var cameraPosition: CameraViewPosition = .back
+    private var cameraPosition: CameraViewPosition = .back
     
-    public init(delegate: CameraViewDelegate) {
+    private var frame: CGRect = .zero
+    
+    public init(delegate: CameraViewDelegate,
+                position: CameraViewPosition,
+                frame: CGRect) {
         super.init()
         self.delegate = delegate
+        self.cameraPosition = position
+        self.frame = frame
         captureSetup()
     }
     
@@ -75,17 +80,17 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
         captureSession.addInput(input)
         captureSession.addOutput(output)
         
-        view.frame = UIScreen.main.bounds
+        view.frame = frame
         
         let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.frame = UIScreen.main.bounds
+        previewLayer.frame = frame
         previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         view.layer.addSublayer(previewLayer)
     }
     
     internal func captureOutput(_ output: AVCaptureOutput!,
-                       didOutputSampleBuffer sampleBuffer: CMSampleBuffer!,
-                       from connection: AVCaptureConnection!) {
+                                didOutputSampleBuffer sampleBuffer: CMSampleBuffer!,
+                                from connection: AVCaptureConnection!) {
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         delegate?.onFrame(withCVImageBuffer: pixelBuffer)
     }
