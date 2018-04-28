@@ -6,7 +6,7 @@
 //  Copyright © 2018 Cristhian León. All rights reserved.
 //
 
-public protocol CameraViewDelegate {
+public protocol CameraViewDelegate: class {
     /// called at every frame that occurs in the captureOutput
     func onFrame(withCVImageBuffer buffer: CVPixelBuffer)
     

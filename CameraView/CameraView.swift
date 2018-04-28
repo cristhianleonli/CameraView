@@ -14,7 +14,7 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
     /// the view that contains the camera video
     public let view = UIView()
     
-    private var delegate: CameraViewDelegate?
+    private weak var delegate: CameraViewDelegate?
     
     private var videoDataOutput: AVCaptureVideoDataOutput?
     
