@@ -10,6 +10,8 @@
 		0E91B3A320A53404009DAD26 /* CameraView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E91B39920A53404009DAD26 /* CameraView.framework */; };
 		0E91B3A820A53404009DAD26 /* CameraViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E91B3A720A53404009DAD26 /* CameraViewTests.swift */; };
 		0E91B3AA20A53404009DAD26 /* CameraView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E91B39C20A53404009DAD26 /* CameraView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E91B3B420A5351A009DAD26 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E91B3B320A5351A009DAD26 /* CameraView.swift */; };
+		0E91B3B620A53692009DAD26 /* CameraViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E91B3B520A53692009DAD26 /* CameraViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,8 @@
 		0E91B3A220A53404009DAD26 /* CameraViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E91B3A720A53404009DAD26 /* CameraViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewTests.swift; sourceTree = "<group>"; };
 		0E91B3A920A53404009DAD26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E91B3B320A5351A009DAD26 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		0E91B3B520A53692009DAD26 /* CameraViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +77,8 @@
 			children = (
 				0E91B39C20A53404009DAD26 /* CameraView.h */,
 				0E91B39D20A53404009DAD26 /* Info.plist */,
+				0E91B3B320A5351A009DAD26 /* CameraView.swift */,
+				0E91B3B520A53692009DAD26 /* CameraViewDelegate.swift */,
 			);
 			path = CameraView;
 			sourceTree = "<group>";
@@ -148,6 +154,7 @@
 				TargetAttributes = {
 					0E91B39820A53404009DAD26 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 					0E91B3A120A53404009DAD26 = {
@@ -196,6 +203,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E91B3B620A53692009DAD26 /* CameraViewDelegate.swift in Sources */,
+				0E91B3B420A5351A009DAD26 /* CameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,19 +343,22 @@
 		0E91B3AE20A53404009DAD26 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 6EQM8FZNFQ;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CameraView/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cristhianleonli.CameraView;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -355,15 +367,17 @@
 		0E91B3AF20A53404009DAD26 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 6EQM8FZNFQ;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CameraView/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cristhianleonli.CameraView;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -376,6 +390,7 @@
 		0E91B3B120A53404009DAD26 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6EQM8FZNFQ;
 				INFOPLIST_FILE = CameraViewTests/Info.plist;
@@ -390,6 +405,7 @@
 		0E91B3B220A53404009DAD26 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6EQM8FZNFQ;
 				INFOPLIST_FILE = CameraViewTests/Info.plist;
