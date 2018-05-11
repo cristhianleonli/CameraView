@@ -7,5 +7,9 @@
 //
 
 public protocol CameraViewDelegate {
+    /// called at every frame that occurs in the captureOutput
     func onFrame(withCVImageBuffer buffer: CVPixelBuffer)
+    
+    /// called when any error happen while creating cameraView
+    func onError(reason: CameraViewError)
 }

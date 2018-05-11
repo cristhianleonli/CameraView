@@ -11,6 +11,7 @@ import AVFoundation
 
 public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     
+    /// the view that contains the camera video
     public let view = UIView()
     
     private var delegate: CameraViewDelegate?
@@ -23,12 +24,8 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
     
     private var captureSession: AVCaptureSession = AVCaptureSession()
     
-    private var cameraPosition: CameraPosition = .back
-    
-    public enum CameraPosition {
-        case front
-        case back
-    }
+    /// Physical position of camera
+    public var cameraPosition: CameraViewPosition = .back
     
     public init(delegate: CameraViewDelegate) {
         super.init()
@@ -36,10 +33,12 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
         captureSetup()
     }
     
+    /// Starts recording the camera
     public func start() {
         captureSession.startRunning()
     }
     
+    /// stops recordig the camera
     public func stop() {
         captureSession.stopRunning()
     }
@@ -54,6 +53,7 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
                 deviceInput = try AVCaptureDeviceInput(device: device)
             }
         } catch {
+            delegate?.onError(reason: .captureDevice)
             return
         }
         
@@ -68,7 +68,8 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
             let output = videoDataOutput,
             captureSession.canAddInput(input),
             captureSession.canAddOutput(output) else {
-            return
+                delegate?.onError(reason: .inputOutput)
+                return
         }
         
         captureSession.addInput(input)
@@ -82,28 +83,10 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
         view.layer.addSublayer(previewLayer)
     }
     
-    func captureOutput(_ output: AVCaptureOutput!,
+    internal func captureOutput(_ output: AVCaptureOutput!,
                        didOutputSampleBuffer sampleBuffer: CMSampleBuffer!,
                        from connection: AVCaptureConnection!) {
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         delegate?.onFrame(withCVImageBuffer: pixelBuffer)
-    }
-    
-    private func convertOrientation(deviceOrientation: UIDeviceOrientation) -> Int {
-        
-        var orientation: Int = 0
-        
-        switch deviceOrientation {
-        case .portrait:
-            orientation = 6
-        case .portraitUpsideDown:
-            orientation = 2
-        case .landscapeLeft:
-            orientation = 3
-        case .landscapeRight:
-            orientation = 4
-        default : orientation = 1
-        }
-        return orientation
     }
 }

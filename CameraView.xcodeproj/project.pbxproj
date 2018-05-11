@@ -12,6 +12,8 @@
 		0E91B3AA20A53404009DAD26 /* CameraView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E91B39C20A53404009DAD26 /* CameraView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E91B3B420A5351A009DAD26 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E91B3B320A5351A009DAD26 /* CameraView.swift */; };
 		0E91B3B620A53692009DAD26 /* CameraViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E91B3B520A53692009DAD26 /* CameraViewDelegate.swift */; };
+		0EEE17CF20A5E87F007C002C /* CameraViewError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE17CE20A5E87F007C002C /* CameraViewError.swift */; };
+		0EEE17D120A5E9CC007C002C /* CameraViewPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE17D020A5E9CC007C002C /* CameraViewPosition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +35,8 @@
 		0E91B3A920A53404009DAD26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E91B3B320A5351A009DAD26 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		0E91B3B520A53692009DAD26 /* CameraViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewDelegate.swift; sourceTree = "<group>"; };
+		0EEE17CE20A5E87F007C002C /* CameraViewError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewError.swift; sourceTree = "<group>"; };
+		0EEE17D020A5E9CC007C002C /* CameraViewPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewPosition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,8 @@
 				0E91B39D20A53404009DAD26 /* Info.plist */,
 				0E91B3B320A5351A009DAD26 /* CameraView.swift */,
 				0E91B3B520A53692009DAD26 /* CameraViewDelegate.swift */,
+				0EEE17CE20A5E87F007C002C /* CameraViewError.swift */,
+				0EEE17D020A5E9CC007C002C /* CameraViewPosition.swift */,
 			);
 			path = CameraView;
 			sourceTree = "<group>";
@@ -203,7 +209,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EEE17D120A5E9CC007C002C /* CameraViewPosition.swift in Sources */,
 				0E91B3B620A53692009DAD26 /* CameraViewDelegate.swift in Sources */,
+				0EEE17CF20A5E87F007C002C /* CameraViewError.swift in Sources */,
 				0E91B3B420A5351A009DAD26 /* CameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
