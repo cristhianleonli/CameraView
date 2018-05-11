@@ -30,7 +30,7 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
         case back
     }
     
-    init(delegate: CameraViewDelegate) {
+    public init(delegate: CameraViewDelegate) {
         super.init()
         self.delegate = delegate
         captureSetup()
