@@ -7,9 +7,15 @@
 //
 
 public enum CameraViewError {
-    /// input or output can not added to captureSession
-    case inputOutput
+    /// input cannot be added to session
+    case inputSession
+    
+    /// output cannot be added to session
+    case outputSession
     
     /// captureDeviceInput can not be created
     case captureDevice
+    
+    /// pixel buffer cannot be created from sample
+    case pixelBuffer
 }
