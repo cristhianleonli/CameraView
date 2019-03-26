@@ -18,4 +18,8 @@ public struct CameraViewConfiguration {
         self.frame = frame
         self.cameraPosition = cameraPosition
     }
+    
+    public init() {
+        self.init(frame: .zero, cameraPosition: .back)
+    }
 }
