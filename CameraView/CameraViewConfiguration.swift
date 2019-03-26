@@ -14,6 +14,8 @@ public struct CameraViewConfiguration {
     
     public var cameraPosition: CameraViewPosition = .back
     
-    public init() {
+    public init(frame: CGRect, cameraPosition: CameraViewPosition) {
+        self.frame = frame
+        self.cameraPosition = cameraPosition
     }
 }
