@@ -28,11 +28,9 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
     public var configuration = CameraViewConfiguration()
     
     public weak var delegate: CameraViewDelegate? = nil
-}
-
-public struct CameraViewConfiguration {
-    var frame: CGRect = .zero
-    var cameraPosition: CameraViewPosition = .back
+    
+    public override init() {
+    }
 }
 
 public extension CameraView {
