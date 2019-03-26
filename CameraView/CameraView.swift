@@ -6,15 +6,14 @@
 //  Copyright © 2018 Cristhian León. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import AVFoundation
 
 public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     
-    /// the view that contains the camera video
-    public let view = UIView()
+    // MARK: Private properties
     
-    private weak var delegate: CameraViewDelegate?
+    private let view: UIView = UIView()
     
     private var videoDataOutput: AVCaptureVideoDataOutput?
     
@@ -24,32 +23,67 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
     
     private var captureSession: AVCaptureSession = AVCaptureSession()
     
-    private var cameraPosition: CameraViewPosition = .back
+    // MARK: Public properties
     
-    private var frame: CGRect = .zero
+    public var configuration = CameraViewConfiguration()
     
-    public init(delegate: CameraViewDelegate,
-                position: CameraViewPosition,
-                frame: CGRect) {
-        super.init()
-        self.delegate = delegate
-        self.cameraPosition = position
-        self.frame = frame
-        captureSetup()
+    public weak var delegate: CameraViewDelegate? = nil
+}
+
+public struct CameraViewConfiguration {
+    var frame: CGRect = .zero
+    var cameraPosition: CameraViewPosition = .back
+}
+
+public extension CameraView {
+    /// Read-only view that contains the preview layer
+    var cameraContainer: UIView {
+        return view
     }
     
     /// Starts recording the camera
-    public func start() {
+    func start() {
+        setupIfNeeded()
         captureSession.startRunning()
     }
     
     /// stops recordig the camera
-    public func stop() {
+    func stop() {
         captureSession.stopRunning()
     }
     
-    private func captureSetup () {
-        let position = (cameraPosition == .front) ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back
+    /// Not call directly, only called by the buffer delegate
+    func captureOutput(_ output: AVCaptureOutput,
+                       didOutput sampleBuffer: CMSampleBuffer,
+                       from connection: AVCaptureConnection) {
+        
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            delegate?.onError(reason: .pixelBuffer)
+            return
+        }
+        
+        delegate?.onFrame(buffer: pixelBuffer)
+    }
+}
+
+private extension CameraView {
+    func setupIfNeeded() {
+        let configurationError = inputOutputSetup()
+        
+        if configurationError != nil {
+            delegate?.onError(reason: configurationError!)
+            return
+        }
+        
+        setupLayer()
+        delegate?.didFinishConfiguration()
+    }
+    
+    func inputOutputSetup() -> CameraViewError? {
+        captureSession.stopRunning()
+        captureSession = AVCaptureSession()
+        
+        let position = configuration.cameraPosition.asCaptureDevice
         let captureDevice: AVCaptureDevice? = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position)
         var deviceInput: AVCaptureDeviceInput?
         
@@ -58,8 +92,7 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
                 deviceInput = try AVCaptureDeviceInput(device: device)
             }
         } catch {
-            delegate?.onError(reason: .captureDevice)
-            return
+            return .captureDevice
         }
         
         captureSession.sessionPreset = AVCaptureSession.Preset.high
@@ -69,29 +102,38 @@ public class CameraView: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate 
         videoDataOutput?.alwaysDiscardsLateVideoFrames = true
         videoDataOutput?.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
         
-        guard let input = deviceInput,
+        guard
+            let input = deviceInput,
+            captureSession.canAddInput(input) else {
+                return .inputSession
+        }
+        
+        guard
             let output = videoDataOutput,
-            captureSession.canAddInput(input),
             captureSession.canAddOutput(output) else {
-                delegate?.onError(reason: .inputOutput)
-                return
+                return .outputSession
         }
         
         captureSession.addInput(input)
         captureSession.addOutput(output)
         
-        view.frame = frame
-        
-        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.frame = frame
-        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        view.layer.addSublayer(previewLayer)
+        return nil
     }
     
-    internal func captureOutput(_ output: AVCaptureOutput!,
-                                didOutputSampleBuffer sampleBuffer: CMSampleBuffer!,
-                                from connection: AVCaptureConnection!) {
-        guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
-        delegate?.onFrame(withCVImageBuffer: pixelBuffer)
+    func setupLayer() {
+        let rect = configuration.frame
+        assert(rect != .zero, "ERROR: frame is zero, configuration needed")
+        
+        view.frame = rect
+        
+        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        
+        for layer in (view.layer.sublayers ?? []) {
+            layer.removeFromSuperlayer()
+        }
+        
+        view.layer.addSublayer(previewLayer)
     }
 }
